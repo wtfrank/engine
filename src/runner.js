@@ -6,54 +6,6 @@ var q = require('q'),
     driver = utils.getDriver(),
     C = driver.constants;
 
-function runUser(userId, onlyInRoom) {
-
-    driver.config.emit('runnerLoopStage','runUser', userId, onlyInRoom);
-
-    //driver.influxAccumulator.resetTime();
-
-    return driver.makeRuntime(userId, onlyInRoom)
-        .then(saveResult, saveResult);
-
-    function saveResult(runResult) {
-
-        driver.config.emit('runnerLoopStage','saveResultStart', runResult);
-
-        //driver.influxAccumulator.mark('endMakeRuntime');
-        if(runResult.console) {
-            driver.sendConsoleMessages(userId, runResult.console);
-        }
-
-        //driver.resetUserRoomVisibility(userId);
-
-        /*return q.when().then(() => runResult.memory ? driver.saveUserMemory(userId, runResult.memory, onlyInRoom) : undefined)
-        .then(() => driver.influxAccumulator.mark('saveUserMemory'))
-        .then(() => runResult.intents ? driver.saveUserIntents(userId, runResult.intents) : undefined)
-        .then(() => driver.influxAccumulator.mark('saveUserIntents'))
-        .then(() => {
-            if(runResult.error) {
-                return q.reject(runResult.error);
-            }
-        });*/
-
-        var promises = [];
-        if(runResult.memory) {
-            promises.push(driver.saveUserMemory(userId, runResult.memory, onlyInRoom));
-        }
-        if(runResult.intents) {
-            promises.push(driver.saveUserIntents(userId, runResult.intents));
-        }
-        return q.all(promises)
-        .then(() => {
-            driver.config.emit('runnerLoopStage','saveResultFinish', runResult);
-            //driver.influxAccumulator.mark('saveUser');
-            if(runResult.error) {
-                return q.reject(runResult.error);
-            }
-        })
-    }
-}
-
 driver.connect('runner')
 .then(() => driver.queue.create('users', 'read'))
 .then(_usersQueue => {
@@ -81,9 +33,9 @@ driver.connect('runner')
                     onlyInRoom = m[1];
                 }
 
-                return runUser(userId, onlyInRoom);
+                return driver.makeRuntime(userId, onlyInRoom);
             })
-            .catch((error) => driver.sendConsoleError(userId, error))
+            .catch((error) => driver.sendConsoleError(userId, _.isObject(error) ? error.error || error.stack : error))
             .then(() => usersQueue.markDone(fetchedUserId))
             .catch((error) => console.error('Error in runner loop:', _.isObject(error) && error.stack || error))
             .finally(() => {
