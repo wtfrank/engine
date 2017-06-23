@@ -41,7 +41,7 @@ module.exports = function(object, target, damage, damageType, roomObjects, roomT
                 }
             });
 
-            bulk.remove(target._id);
+            bulk.remove(target._id, target.room);
             delete roomObjects[target._id];
         }
 
@@ -49,7 +49,7 @@ module.exports = function(object, target, damage, damageType, roomObjects, roomT
             if(target.spawning) {
                 var spawning = _.find(roomObjects, {user: target.user, name: target.spawning.name});
                 if(spawning) {
-                    bulk.remove(spawning._id);
+                    bulk.remove(spawning._id, spawning.room);
                 }
             }
         }

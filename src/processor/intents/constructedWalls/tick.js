@@ -27,7 +27,7 @@ module.exports = function(object, roomObjects, roomTerrain, bulk, bulkUsers, roo
 
     if(!_.isObject(object.decayTime)) {
         if (gameTime >= object.decayTime - 1 || roomController && !roomController.user) {
-            bulk.remove(object._id);
+            bulk.remove(object._id, object.room);
             delete roomObjects[object._id];
         }
 
@@ -38,7 +38,7 @@ module.exports = function(object, roomObjects, roomTerrain, bulk, bulkUsers, roo
 
     if(_.isObject(object.decayTime)) {
         if(Date.now() > object.decayTime.timestamp) {
-            bulk.remove(object._id);
+            bulk.remove(object._id, object.room);
             delete roomObjects[object._id];
         }
     }

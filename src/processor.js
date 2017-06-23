@@ -25,6 +25,7 @@ function processRoom(roomId, intents, objects, terrain, gameTime, roomInfo, flag
         oldRoomInfo = _.clone(roomInfo);
 
         roomInfo.active = false;
+        roomInfo.invasion = false;
 
         var terrainItem = terrain[_.findKey(terrain)];
         if (terrainItem.terrain) {
@@ -54,6 +55,10 @@ function processRoom(roomId, intents, objects, terrain, gameTime, roomInfo, flag
                     upgradeController: null,
                     reserveController: null
                 };
+
+                if(object.user == '2') {
+                    roomInfo.invasion = true;
+                }
             }
             if (object.type == 'link') {
                 object._actionLog = object.actionLog;
@@ -292,7 +297,7 @@ function processRoom(roomId, intents, objects, terrain, gameTime, roomInfo, flag
 
             if(object.type == 'powerBank') {
                 if(gameTime >= object.decayTime-1) {
-                    bulk.remove(object._id);
+                    bulk.remove(object._id, object.room);
                     delete objects[object._id];
                 }
             }

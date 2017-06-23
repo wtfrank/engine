@@ -69,7 +69,7 @@ module.exports = function(object, intent, roomObjects, roomTerrain, bulk, bulkUs
         });
     }
     else {
-        bulk.remove(target._id);
+        bulk.remove(target._id, target.room);
 
         var newObject = {
             type: target.structureType,

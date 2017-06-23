@@ -7,7 +7,7 @@ module.exports = function(roomObjects, bulk) {
 
     _.forEach(roomObjects, (i) => {
         if(i.type == 'constructedWall' && i.decayTime && i.user) {
-            bulk.remove(i._id);
+            bulk.remove(i._id, i.room);
             delete roomObjects[i._id];
         }
     });

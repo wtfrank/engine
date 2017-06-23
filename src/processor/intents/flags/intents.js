@@ -3,7 +3,7 @@ var _ = require('lodash');
 module.exports = function(object, objectIntents, roomObjects, roomTerrain, bulk, bulkUsers, roomController, stats) {
 
     if(objectIntents.remove) {
-        bulk.remove(object._id);
+        bulk.remove(object._id, object.room);
     }
 
     if(objectIntents.setColor) {

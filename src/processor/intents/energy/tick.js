@@ -15,7 +15,7 @@ module.exports = function(object, roomObjects, roomTerrain, bulk) {
         if (_.isNaN(object[resourceType])) {
             console.log("Energy NaN: dropped");
         }
-        bulk.remove(object._id);
+        bulk.remove(object._id, object.room);
         delete roomObjects[object._id];
     }
     else {

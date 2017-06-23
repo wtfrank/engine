@@ -35,7 +35,7 @@ module.exports = function(object, roomObjects, roomTerrain, bulk, bulkUsers, roo
     if(object.spawning) {
         var spawn = _.find(roomObjects, {type: 'spawn', x: object.x, y: object.y});
         if(!spawn) {
-            bulk.remove(object._id);
+            bulk.remove(object._id, object.room);
         }
         else {
             if(!spawn.spawning || spawn.spawning.name != object.name) {
@@ -95,7 +95,7 @@ module.exports = function(object, roomObjects, roomTerrain, bulk, bulkUsers, roo
                     }
                 });
 
-                bulk.remove(object._id);
+                bulk.remove(object._id, object.room);
                 delete roomObjects[object._id];
             }
         }
@@ -115,7 +115,7 @@ module.exports = function(object, roomObjects, roomTerrain, bulk, bulkUsers, roo
         if(object.fatigue < 0)
             object.fatigue = 0;
 
-        bulk.update(object._id, {fatigue: object.fatigue});
+        bulk.update(object, {fatigue: object.fatigue});
     }
 
     if(_.isNaN(object.hits) || object.hits <= 0) {

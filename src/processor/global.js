@@ -31,7 +31,7 @@ module.exports = () => {
                 bulkRooms.update(creep.interRoom.room, {active: true});
             }
             activateRooms[creep.interRoom.room] = true;
-            bulkObjects1.remove(creep._id);
+            bulkObjects1.remove(creep._id, creep.room);
             creep.room = creep.interRoom.room;
             creep.x = creep.interRoom.x;
             creep.y = creep.interRoom.y;

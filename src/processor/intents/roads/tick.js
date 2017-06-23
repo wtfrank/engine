@@ -15,7 +15,7 @@ module.exports = function(object, roomObjects, roomTerrain, bulk, bulkUsers, roo
         }
         object.hits -= decayAmount;
         if(object.hits <= 0) {
-            bulk.remove(object._id);
+            bulk.remove(object._id, object.room);
             delete roomObjects[object._id];
         }
         else {

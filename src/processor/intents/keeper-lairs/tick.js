@@ -19,7 +19,7 @@ module.exports = function(object, roomObjects, roomTerrain, bulk, bulkUsers, roo
     if(object.nextSpawnTime && gameTime >= object.nextSpawnTime-1) {
         var keeper = _.find(roomObjects, (i) => i.type == 'creep' && i.user == '3' && i.name == 'Keeper'+object._id);
         if(keeper) {
-            bulk.remove(keeper._id);
+            bulk.remove(keeper._id, keeper.room);
         }
 
         var body = [];

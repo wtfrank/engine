@@ -13,12 +13,12 @@ module.exports = function(object, roomObjects, roomTerrain, bulk, userBulk, room
     }
 
     if(object.decayTime && gameTime > object.decayTime) {
-        bulk.remove(object._id);
+        bulk.remove(object._id, object.room);
         delete roomObjects[object._id];
 
         var wall = _.find(roomObjects, i => i.type == 'constructedWall' && i.x == object.x+1 && i.y == object.y+1);
         if(wall) {
-            bulk.remove(wall._id);
+            bulk.remove(wall._id, wall.room);
             delete roomObjects[wall._id];
         }
     }

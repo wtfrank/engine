@@ -6,7 +6,7 @@ var _ = require('lodash'),
 module.exports = function(object, roomObjects, roomTerrain, bulk, bulkUsers, roomController, stats, gameTime, roomInfo) {
 
     if(roomInfo.novice && roomInfo.novice > Date.now() || roomInfo.respawnArea && roomInfo.respawnArea > Date.now()) {
-        bulk.remove(object._id);
+        bulk.remove(object._id, object.room);
         delete roomObjects[object._id];
         return;
     }
@@ -21,7 +21,7 @@ module.exports = function(object, roomObjects, roomTerrain, bulk, bulkUsers, roo
                 require('../creeps/_die')(target, roomObjects, bulk, stats, 0);
             }
             if(target.type == 'constructionSite' || target.type == 'energy') {
-                bulk.remove(target._id);
+                bulk.remove(target._id, target.room);
                 delete roomObjects[target._id];
             }
         });
@@ -66,7 +66,7 @@ module.exports = function(object, roomObjects, roomTerrain, bulk, bulkUsers, roo
     }
 
     if(gameTime >= object.landTime) {
-        bulk.remove(object._id);
+        bulk.remove(object._id, object.room);
         delete roomObjects[object._id];
     };
 

@@ -15,12 +15,12 @@ module.exports = function(intent, roomObjects, roomTerrain, bulk, bulkUsers, roo
 
     if(_.any(roomObjects, i => i.type == 'creep' && i.user != intent.user)) return;
 
-    bulk.remove(object._id);
+    bulk.remove(object._id, object.room);
 
     if(object.type == 'spawn' && object.spawning) {
         var spawning = _.find(roomObjects, {user: object.user, name: object.spawning.name});
         if(spawning) {
-            bulk.remove(spawning._id);
+            bulk.remove(spawning._id, spawning.room);
         }
     }
 

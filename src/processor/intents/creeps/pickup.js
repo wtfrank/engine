@@ -32,7 +32,7 @@ module.exports = function(object, intent, roomObjects, roomTerrain, bulk) {
     object[resourceType] += amount;
 
     if(!target[resourceType]) {
-        bulk.remove(target._id);
+        bulk.remove(target._id, target.room);
         delete roomObjects[target._id];
     }
     else {

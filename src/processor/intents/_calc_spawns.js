@@ -17,7 +17,7 @@ module.exports = function(roomSpawns, roomExtensions, roomController, bulk) {
 
     roomSpawns.forEach(i => {
         if(i._off !== i.off) {
-            bulk.update(i._id, {off: i._off});
+            bulk.update(i, {off: i._off});
         }
     });
 
@@ -35,7 +35,7 @@ module.exports = function(roomSpawns, roomExtensions, roomController, bulk) {
 
     roomExtensions.forEach(i => {
         if(i._off !== i.off) {
-            bulk.update(i._id, {off: i._off});
+            bulk.update(i, {off: i._off});
         }
     });
 };

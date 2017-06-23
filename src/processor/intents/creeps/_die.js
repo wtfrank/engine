@@ -9,7 +9,7 @@ module.exports = function(object, roomObjects, bulk, stats, dropRate) {
         dropRate = C.CREEP_CORPSE_RATE;
     }
 
-    bulk.remove(object._id);
+    bulk.remove(object._id, object.room);
     delete roomObjects[object._id];
 
     if(dropRate > 0 && !object.userSummoned) {
