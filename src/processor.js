@@ -33,7 +33,7 @@ function processRoom(roomId, intents, objects, terrain, gameTime, roomInfo, flag
         }
 
         _.forEach(objects, (object) => {
-            if(!object) {
+            if(!object || !object._id) {
                 return;
             }
 
@@ -234,7 +234,7 @@ function processRoom(roomId, intents, objects, terrain, gameTime, roomInfo, flag
 
         _.forEach(objects, (object) => {
 
-            if(!object || object._skip) {
+            if(!object || object._skip || !object._id) {
                 return;
             }
 
