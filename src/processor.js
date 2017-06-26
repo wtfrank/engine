@@ -283,7 +283,9 @@ function processRoom(roomId, intents, objects, terrain, gameTime, roomInfo, flag
 
             if(object.type == 'observer') {
                 bulk.update(object, {observeRoom: object.observeRoom});
-                resultPromises.push(driver.setUserRoomVisibility(object.user, object.observeRoom));
+                if(object.observeRoom) {
+                    resultPromises.push(driver.setUserRoomVisibility(object.user, object.observeRoom));
+                }
             }
 
             if (object.type == 'storage') {
