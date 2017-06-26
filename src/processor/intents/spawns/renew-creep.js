@@ -39,7 +39,7 @@ module.exports = function(object, intent, roomObjects, roomTerrain, bulk, bulkUs
 
     target.ageTime += effect;
     target.actionLog.healed = {x: object.x, y: object.y};
-    bulk.inc(target, 'ageTime', effect);
+    bulk.update(target, {ageTime: target.ageTime});
 
     if(_.any(target.body, i => !!i.boost)) {
         target.body.forEach(i => {
