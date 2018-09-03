@@ -100,7 +100,8 @@ exports.makeMap = function(runtimeData, register) {
 			var fromIndex = xyToIndex(fromX, fromY);
 			heap.push(fromIndex, heuristic(fromX, fromY));
 			var routeCallback = (opts && opts.routeCallback) || function() { return 1; };
-
+			
+			let exitsExpanded = 0;
 			// Astar
 			while (heap.size()) {
 
@@ -142,6 +143,8 @@ exports.makeMap = function(runtimeData, register) {
 				route.reverse();
 				return route;
 			  }
+			  if (opts.maxExits !== undefined && exitsExpanded > opts.maxExits)
+				  return ERR_NO_PATH;
 
 			  // Add neighbors
 			  let fromRoomName = utils.getRoomNameFromXY(xx, yy);
@@ -174,6 +177,7 @@ exports.makeMap = function(runtimeData, register) {
 				  openClosed.open(neighborIndex);
 				  parents[neighborIndex] = index;
 				}
+				exitsExpanded += 1;
 			  }
 			}
 
